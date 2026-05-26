@@ -14,6 +14,15 @@
 docker compose up --build
 ```
 
+Если БД уже была создана ранее и backend падает с `permission denied for table users`:
+
+```bash
+docker compose exec db psql -U postgres -d card_manager -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO card_service; GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO card_service; GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO card_service;"
+docker compose restart backend
+```
+
+Либо пересоздайте том: `docker compose down -v` и снова `docker compose up --build`.
+
 - Приложение: http://localhost:3000
 - API: http://localhost:8000/api/health
 - PostgreSQL: localhost:5432
