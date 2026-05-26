@@ -187,15 +187,15 @@ export function AuthPage() {
                 <div>
                   <Label>Email</Label>
                   <Input type="email" {...loginForm.register("email")} />
-                  {loginForm.formState.errors.email && (
-                    <p className="mt-1 text-sm text-destructive">{loginForm.formState.errors.email.message}</p>
+                  {loginForm.formState.errors.email?.message && (
+                    <p className="mt-1 text-sm text-destructive">{String(loginForm.formState.errors.email.message)}</p>
                   )}
                 </div>
                 <div>
                   <Label>Пароль</Label>
                   <Input type="password" {...loginForm.register("password")} />
-                  {loginForm.formState.errors.password && (
-                    <p className="mt-1 text-sm text-destructive">{loginForm.formState.errors.password.message}</p>
+                  {loginForm.formState.errors.password?.message && (
+                    <p className="mt-1 text-sm text-destructive">{String(loginForm.formState.errors.password.message)}</p>
                   )}
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>

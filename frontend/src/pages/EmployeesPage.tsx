@@ -254,8 +254,8 @@ export function EmployeesPage() {
             <div>
               <Label>ФИО *</Label>
               <Input {...form.register("full_name")} />
-              {form.formState.errors.full_name && (
-                <p className="text-sm text-destructive">{form.formState.errors.full_name.message}</p>
+              {form.formState.errors.full_name?.message && (
+                <p className="text-sm text-destructive">{String(form.formState.errors.full_name.message)}</p>
               )}
             </div>
             <div>

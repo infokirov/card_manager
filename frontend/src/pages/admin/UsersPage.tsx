@@ -17,7 +17,6 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogTitle,
   AlertDialogTrigger,
@@ -38,13 +37,23 @@ const createSchema = z.object({
   role: z.enum(["admin", "user"]),
 });
 
+type CreateUserForm = z.infer<typeof createSchema>;
+
 export function UsersPage() {
   const { user: currentUser } = useAuth();
   const [users, setUsers] = useState<UserRow[]>([]);
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const form = useForm({ resolver: zodResolver(createSchema), defaultValues: { role: "user" as const } });
+  const form = useForm<CreateUserForm>({
+    resolver: zodResolver(createSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      display_name: "",
+      role: "user",
+    },
+  });
 
   const load = async () => {
     const { data } = await api.get("/admin/users");
@@ -172,7 +181,7 @@ export function UsersPage() {
               <Label>Роль</Label>
               <Select
                 value={form.watch("role")}
-                onValueChange={(v) => form.setValue("role", v as "admin" | "user")}
+                onValueChange={(v) => form.setValue("role", v as CreateUserForm["role"])}
               >
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>

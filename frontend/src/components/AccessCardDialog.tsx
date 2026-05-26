@@ -102,10 +102,18 @@ export function AccessCardDialog({ cardId, open, onOpenChange, onSaved }: Access
       position: String(card.position_name || ""),
       hasAbs1: selected.has_abs1,
       hasAbs2: selected.has_abs2,
-      resources: dirs.resources.filter((r) => selected.resource_ids.includes(r.id)),
-      internet: dirs.internet.filter((r) => selected.internet_resource_ids.includes(r.id)),
-      software: dirs.software.filter((r) => selected.software_ids.includes(r.id)),
-      absAccess: dirs.abs.filter((r) => selected.abs_access_ids.includes(r.id)),
+      resources: dirs.resources
+        .filter((r) => selected.resource_ids.includes(r.id))
+        .map((r) => ({ name: r.name })),
+      internet: dirs.internet
+        .filter((r) => selected.internet_resource_ids.includes(r.id))
+        .map((r) => ({ name: r.name, url: r.url })),
+      software: dirs.software
+        .filter((r) => selected.software_ids.includes(r.id))
+        .map((r) => ({ name: r.name, version: r.version })),
+      absAccess: dirs.abs
+        .filter((r) => selected.abs_access_ids.includes(r.id))
+        .map((r) => ({ name: r.name })),
     });
   };
 
@@ -175,12 +183,12 @@ export function AccessCardDialog({ cardId, open, onOpenChange, onSaved }: Access
                   {history.map((h) => (
                     <li key={String(h.id)} className="rounded border p-2">
                       <span className="font-medium">{String(h.action_type)}</span>
-                      {h.field_name && (
+                      {h.field_name != null && h.field_name !== "" ? (
                         <span className="text-muted-foreground">
                           {" "}
                           — {String(h.field_name)}: {String(h.old_value)} → {String(h.new_value)}
                         </span>
-                      )}
+                      ) : null}
                       <div className="text-xs text-muted-foreground">
                         {new Date(String(h.changed_at)).toLocaleString("ru-RU")}
                       </div>
